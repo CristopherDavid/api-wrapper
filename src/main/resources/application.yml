@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: course-catalog-service
+
+  profiles:
+    active: default
+
+# H2 Database
+---
+spring:
+  config:
+    activate:
+      on-profile: default
+  datasource:
+    url: jdbc:postgresql://localhost:5432/content-db
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+  jpa:
+    database: POSTGRESQL
+    generate-ddl: true
+    show-sql: true
+
+  # MongoDB config
+  data:
+    mongodb:
+      uri: mongodb://mongodb:mongodb@localhost:27017/content-db?authSource=admin
