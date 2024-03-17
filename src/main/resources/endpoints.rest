@@ -14,6 +14,10 @@ Accept: application/json
 GET http://localhost:8080/v1/documents/films
 Accept: application/json
 
+### Process Films
+GET http://localhost:8080/v1/documents/process/films
+Accept: application/json
+
 ### VideoGames
 GET http://localhost:8080/v1/documents/videoGames
 Accept: application/json

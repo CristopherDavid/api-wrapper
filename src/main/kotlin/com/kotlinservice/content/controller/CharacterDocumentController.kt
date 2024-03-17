@@ -3,6 +3,7 @@ package com.kotlinservice.content.controller
 import com.github.michaelbull.result.getOrThrow
 import com.github.michaelbull.result.map
 import com.kotlinservice.content.dto.CharactersDocumentResponse
+import com.kotlinservice.content.entity.Film
 import com.kotlinservice.content.service.CharacterDocumentService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -31,6 +32,16 @@ class CharacterDocumentController (private val characterDocumentService: Charact
         return characterDocumentService.retrieveAllFilms()
             .map {
                 ResponseEntity.ok(it)
+            }
+            .getOrThrow{
+                ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR)
+            }
+    }
+    @GetMapping("/process/films")
+    fun processAllFilms(): ResponseEntity<String> {
+        return characterDocumentService.retrieveAndProcessFilms()
+            .map {
+                ResponseEntity.ok("${it.size} films, inserted into the DB")
             }
             .getOrThrow{
                 ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR)

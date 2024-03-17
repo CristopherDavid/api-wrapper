@@ -1,19 +1,21 @@
 package com.kotlinservice.content.service
 
-import com.github.michaelbull.result.Result
-import com.github.michaelbull.result.map
-import com.github.michaelbull.result.mapError
-import com.github.michaelbull.result.runCatching
+import com.github.michaelbull.result.*
 import com.kotlinservice.content.dto.CharactersDocumentResponse
+import com.kotlinservice.content.entity.Film
 import com.kotlinservice.content.errors.DatabaseError
 import com.kotlinservice.content.mappers.CharacterResponseMappers
 import com.kotlinservice.content.repository.CharacterMongoRepository
+import com.kotlinservice.content.repository.CharacterRepository
+import com.kotlinservice.content.repository.FilmRepository
 import org.springframework.stereotype.Service
 
 
 @Service
 class CharacterDocumentService(
     private val characterMongoRepository: CharacterMongoRepository,
+    private val characterRepository: CharacterRepository,
+    private val filmRepository: FilmRepository
 ) {
 
     fun retrieveAllDocuments(): Result<List<CharactersDocumentResponse>, DatabaseError> {
@@ -39,6 +41,17 @@ class CharacterDocumentService(
             }
             .map {
                 it.flatMap { it.films }.distinct()
+            }
+    }
+
+    fun retrieveAndProcessFilms(): Result<List<Film>, DatabaseError> {
+        return retrieveAllFilms()
+            .map {
+                it.map{film ->
+                    filmRepository.save(Film(
+                        name = film
+                    ))
+                }
             }
     }
 

@@ -28,7 +28,6 @@ dependencies {
     implementation ("com.fasterxml.jackson.core:jackson-databind")
     implementation ("org.springframework.boot:spring-boot-starter-data-mongodb")
 
-    runtimeOnly("com.h2database:h2")
     runtimeOnly("org.postgresql:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
