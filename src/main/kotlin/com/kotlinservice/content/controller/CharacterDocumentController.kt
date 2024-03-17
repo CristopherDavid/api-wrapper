@@ -48,25 +48,48 @@ class CharacterDocumentController (private val characterDocumentService: Charact
             }
     }
 
-    @GetMapping("/videoGames")
-    fun getAllVideoGames(): ResponseEntity<List<String>> {
-        return characterDocumentService.retrieveAllVideoGames()
+    @GetMapping("/process/videogames")
+    fun processAllVideogames(): ResponseEntity<String> {
+        return characterDocumentService.retrieveAndProcessVideogames()
             .map {
-                ResponseEntity.ok(it)
+                ResponseEntity.ok("${it.size} videogames, inserted into the DB")
             }
             .getOrThrow{
                 ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR)
             }
     }
 
-    @GetMapping("/enemies")
-    fun getAllEnemies(): ResponseEntity<List<String>> {
-        return characterDocumentService.retrieveAllEnemies()
+    @GetMapping("/process/parkAttractions")
+    fun processAllParkAttractions(): ResponseEntity<String> {
+        return characterDocumentService.retrieveAndProcessParkAttractions()
             .map {
-                ResponseEntity.ok(it)
+                ResponseEntity.ok("${it.size} park attractions, inserted into the DB")
             }
             .getOrThrow{
                 ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR)
             }
     }
+
+    @GetMapping("/process/tvShows")
+    fun processAllTvShows(): ResponseEntity<String> {
+        return characterDocumentService.retrieveAndProcessTvShows()
+            .map {
+                ResponseEntity.ok("${it.size} Tv shows, inserted into the DB")
+            }
+            .getOrThrow{
+                ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR)
+            }
+    }
+
+    @GetMapping("/process/shortFilms")
+    fun processAllShortFilms(): ResponseEntity<String> {
+        return characterDocumentService.retrieveAndProcessShortFilms()
+            .map {
+                ResponseEntity.ok("${it.size} short films, inserted into the DB")
+            }
+            .getOrThrow{
+                ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR)
+            }
+    }
+
 }

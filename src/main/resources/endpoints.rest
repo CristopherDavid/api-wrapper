@@ -18,10 +18,18 @@ Accept: application/json
 GET http://localhost:8080/v1/documents/process/films
 Accept: application/json
 
-### VideoGames
-GET http://localhost:8080/v1/documents/videoGames
+### Process VideoGames
+GET http://localhost:8080/v1/documents/process/videogames
 Accept: application/json
 
-### Enemies
-GET http://localhost:8080/v1/documents/enemies
+### Process Attractions
+GET http://localhost:8080/v1/documents/process/parkAttractions
+Accept: application/json
+
+### Process TvShows
+GET http://localhost:8080/v1/documents/process/tvShows
+Accept: application/json
+
+### Process ShortFilms
+GET http://localhost:8080/v1/documents/process/shortFilms
 Accept: application/json
