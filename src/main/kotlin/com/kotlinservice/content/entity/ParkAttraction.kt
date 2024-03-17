@@ -11,11 +11,6 @@ data class ParkAttraction(
 
     val name: String ="",
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "park-attraction_character",
-        joinColumns = [JoinColumn(name = "park-attraction_id")],
-        inverseJoinColumns = [JoinColumn(name = "character_id")]
-    )
+    @ManyToMany(mappedBy = "parkAttractions")
     val characters: List<Character>? = null
 )

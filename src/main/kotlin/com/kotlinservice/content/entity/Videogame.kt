@@ -10,12 +10,7 @@ data class Videogame(
 
     val name: String = "",
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "videogame_character",
-        joinColumns = [JoinColumn(name = "videogame_id")],
-        inverseJoinColumns = [JoinColumn(name = "character_id")]
-    )
+    @ManyToMany(mappedBy = "videogames")
     val characters: List<Character>? = null
 )
 

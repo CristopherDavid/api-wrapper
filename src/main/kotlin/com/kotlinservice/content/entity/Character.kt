@@ -11,19 +11,44 @@ data class Character(
     val imageUrl: String? = null,
     val sourceUrl: String = "",
 
-    @ManyToMany(mappedBy = "characters")
+    @ManyToMany(cascade = arrayOf(CascadeType.PERSIST, CascadeType.MERGE), fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "character_film",
+        joinColumns = [JoinColumn(name = "character_id")],
+        inverseJoinColumns = [JoinColumn(name = "film_id")]
+    )
     val films: MutableList<Film> = mutableListOf(),
 
-    @ManyToMany(mappedBy = "characters")
+    @ManyToMany(cascade = arrayOf(CascadeType.PERSIST, CascadeType.MERGE), fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "character_shortFilm",
+        joinColumns = [JoinColumn(name = "character_id")],
+        inverseJoinColumns = [JoinColumn(name = "shortFilm_id")]
+    )
     val shortFilms: MutableList<ShortFilm> = mutableListOf(),
 
-    @ManyToMany(mappedBy = "characters")
+    @ManyToMany(cascade = arrayOf(CascadeType.PERSIST, CascadeType.MERGE), fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "character_videogames",
+        joinColumns = [JoinColumn(name = "character_id")],
+        inverseJoinColumns = [JoinColumn(name = "videogame_id")]
+    )
     val videogames: MutableList<Videogame> = mutableListOf(),
 
-    @ManyToMany(mappedBy = "characters")
+    @ManyToMany(cascade = arrayOf(CascadeType.PERSIST, CascadeType.MERGE), fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "character_tvShow",
+        joinColumns = [JoinColumn(name = "character_id")],
+        inverseJoinColumns = [JoinColumn(name = "tvShow_id")]
+    )
     val tvShows: MutableList<TvShow> = mutableListOf(),
 
-    @ManyToMany(mappedBy = "characters")
+    @ManyToMany(cascade = arrayOf(CascadeType.PERSIST, CascadeType.MERGE), fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "character_parkAttractions",
+        joinColumns = [JoinColumn(name = "character_id")],
+        inverseJoinColumns = [JoinColumn(name = "parkAttraction_id")]
+    )
     val parkAttractions: MutableList<ParkAttraction> = mutableListOf()
 ) {
     constructor(name: String, sourceUrl: String) : this(

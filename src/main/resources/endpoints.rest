@@ -37,3 +37,11 @@ Accept: application/json
 ### Process Characters
 GET http://localhost:8080/v1/documents/process/characters
 Accept: application/json
+
+### Get Character
+GET http://localhost:8080/v1/characters/Hercules
+Accept: application/json
+
+### Get Film
+GET http://localhost:8080/v1/films/Hercules%20%28film%29
+Accept: application/json

@@ -1,12 +1,13 @@
 package com.kotlinservice.content.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.github.michaelbull.result.*
-import com.kotlinservice.content.dto.CharactersApiResponse
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.map
+import com.github.michaelbull.result.mapError
+import com.github.michaelbull.result.runCatching
 import com.kotlinservice.content.dto.DisneyApiPaginatedResponse
-import com.kotlinservice.content.entity.CharacterResponse
 import com.kotlinservice.content.errors.DatabaseError
 import com.kotlinservice.content.errors.DatabaseTimeout
 import com.kotlinservice.content.errors.DomainError
@@ -17,9 +18,7 @@ import org.springframework.http.codec.CodecConfigurer
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.Disposable
-import reactor.core.publisher.Mono
 import java.sql.SQLTimeoutException
-import kotlin.reflect.KFunction1
 
 @Service
 class DisneyApiService(private val characterMongoRepository: CharacterMongoRepository) {

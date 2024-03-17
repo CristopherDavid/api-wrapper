@@ -10,11 +10,6 @@ data class TvShow (
 
     val name: String = "",
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "tv-show_character",
-        joinColumns = [JoinColumn(name = "tv-show_id")],
-        inverseJoinColumns = [JoinColumn(name = "character_id")]
-    )
+    @ManyToMany(mappedBy = "tvShows")
     val characters: List<Character>? = null
 )

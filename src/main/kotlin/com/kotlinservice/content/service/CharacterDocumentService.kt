@@ -1,16 +1,20 @@
 package com.kotlinservice.content.service
 
-import com.github.michaelbull.result.*
+import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.map
+import com.github.michaelbull.result.mapError
+import com.github.michaelbull.result.runCatching
 import com.kotlinservice.content.dto.CharactersDocumentResponse
 import com.kotlinservice.content.entity.*
 import com.kotlinservice.content.errors.DatabaseError
 import com.kotlinservice.content.mappers.CharacterResponseMappers
 import com.kotlinservice.content.repository.*
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 
 @Service
-class CharacterDocumentService(
+open class CharacterDocumentService(
     private val characterMongoRepository: CharacterMongoRepository,
     private val characterRepository: CharacterRepository,
     private val filmRepository: FilmRepository,
@@ -147,7 +151,8 @@ class CharacterDocumentService(
             }
     }
 
-    fun retrieveAndProcessCharacters(): Result<List<Character>, DatabaseError> {
+    @Transactional
+    open fun retrieveAndProcessCharacters(): Result<List<Character>, DatabaseError> {
         return runCatching {
             characterMongoRepository.findAll()
         }
@@ -161,47 +166,42 @@ class CharacterDocumentService(
             }
     }
 
+
     private fun processAndSaveCharacter(characterDocument: CharacterResponse): Character {
+
+
+        val characterFilms = characterDocument.films.mapNotNull {
+            filmRepository.findByName(it)
+        }.toMutableList()
+
+        val characterTvShows = characterDocument.tvShows.mapNotNull {
+            tvShowRepository.findByName(it)
+        }.toMutableList()
+
+        val characterShortFilms = characterDocument.shortFilms.mapNotNull {
+            shortFilmRepository.findByName(it)
+        }.toMutableList()
+
+        val characterParkAttractions = characterDocument.parkAttractions.mapNotNull {
+            parkAttractionRepository.findByName(it)
+
+        }.toMutableList()
+
+        val characterVideoGames = characterDocument.videoGames.mapNotNull {
+            videoGameRepository.findByName(it)
+        }.toMutableList()
+
         val character = Character(
             name = characterDocument.name,
             sourceUrl = characterDocument.sourceUrl,
-            imageUrl = characterDocument.imageUrl
+            imageUrl = characterDocument.imageUrl,
+            films = characterFilms,
+            tvShows = characterTvShows,
+            shortFilms = characterShortFilms,
+            parkAttractions = characterParkAttractions,
+            videogames = characterVideoGames
+
         )
-
-        characterDocument.films.forEach {
-            val film = filmRepository.findByName(it)
-            film?.let {
-                character.films.add(it)
-            }
-        }
-
-        characterDocument.tvShows.forEach {
-            val tvShow = tvShowRepository.findByName(it)
-            tvShow?.let {
-                character.tvShows.add(it)
-            }
-        }
-
-        characterDocument.shortFilms.forEach {
-            val shortFilm = shortFilmRepository.findByName(it)
-            shortFilm?.let {
-                character.shortFilms.add(it)
-            }
-        }
-
-        characterDocument.parkAttractions.forEach {
-            val film = parkAttractionRepository.findByName(it)
-            film?.let {
-                character.parkAttractions.add(it)
-            }
-        }
-
-        characterDocument.videoGames.forEach {
-            val film = videoGameRepository.findByName(it)
-            film?.let {
-                character.videogames.add(it)
-            }
-        }
 
         return characterRepository.save(character)
     }
