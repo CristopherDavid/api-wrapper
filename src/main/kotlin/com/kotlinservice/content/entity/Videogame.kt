@@ -8,7 +8,7 @@ data class Videogame(
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Int? =  null ,
 
-    val name: String,
+    val name: String = "",
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -18,10 +18,4 @@ data class Videogame(
     )
     val characters: List<Character>? = null
 )
-{
-    constructor(name: String) : this(
-        id= null,
-        name = name,
-        characters = null
-    )
-}
+

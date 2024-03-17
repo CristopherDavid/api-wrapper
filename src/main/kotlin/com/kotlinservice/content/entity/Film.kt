@@ -8,8 +8,8 @@ data class Film (
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Int?,
-    var name: String,
+    var id: Int? = null,
+    var name: String = "",
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -17,11 +17,5 @@ data class Film (
         joinColumns = [JoinColumn(name = "film_id")],
         inverseJoinColumns = [JoinColumn(name = "character_id")]
     )
-    val characters: List<Character>? = null
-) {
-    constructor(name: String) : this(
-        id= null,
-        name = name,
-        characters = null
-    )
-}
+    val characters: MutableList<Character> = mutableListOf()
+)

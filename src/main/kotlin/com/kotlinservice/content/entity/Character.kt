@@ -7,35 +7,35 @@ data class Character(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Int? = null,
-    val name: String,
+    val name: String = "",
     val imageUrl: String? = null,
-    val sourceUrl: String,
+    val sourceUrl: String = "",
 
     @ManyToMany(mappedBy = "characters")
-    val films: List<Film>? = null,
+    val films: MutableList<Film> = mutableListOf(),
 
     @ManyToMany(mappedBy = "characters")
-    val shortFilms: List<ShortFilm>? = null,
+    val shortFilms: MutableList<ShortFilm> = mutableListOf(),
 
     @ManyToMany(mappedBy = "characters")
-    val videogames: List<Videogame>? = null,
+    val videogames: MutableList<Videogame> = mutableListOf(),
 
     @ManyToMany(mappedBy = "characters")
-    val tvShows: List<TvShow>? = null,
+    val tvShows: MutableList<TvShow> = mutableListOf(),
 
     @ManyToMany(mappedBy = "characters")
-    val parkAttractions: List<ParkAttraction>? = null
+    val parkAttractions: MutableList<ParkAttraction> = mutableListOf()
 ) {
     constructor(name: String, sourceUrl: String) : this(
         id = null,
         name = name,
         sourceUrl = sourceUrl,
         imageUrl = null,
-        films = null,
-        shortFilms = null,
-        videogames = null,
-        tvShows = null,
-        parkAttractions = null
+        films = mutableListOf(),
+        shortFilms = mutableListOf(),
+        videogames = mutableListOf(),
+        tvShows = mutableListOf(),
+        parkAttractions = mutableListOf()
     ) {
 
     }

@@ -4,4 +4,5 @@ import com.kotlinservice.content.entity.Videogame
 import org.springframework.data.repository.CrudRepository
 
 interface VideoGameRepository: CrudRepository<Videogame, Int> {
+    fun findByName (name: String): Videogame?
 }

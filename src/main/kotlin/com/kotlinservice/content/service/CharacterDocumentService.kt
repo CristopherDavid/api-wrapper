@@ -17,7 +17,7 @@ class CharacterDocumentService(
     private val shortFilmRepository: ShortFilmRepository,
     private val tvShowRepository: TvShowRepository,
     private val parkAttractionRepository: ParkAttractionRepository,
-    private val videoGameRepository: VideoGameRepository
+    private val videoGameRepository: VideoGameRepository,
 ) {
 
     fun retrieveAllDocuments(): Result<List<CharactersDocumentResponse>, DatabaseError> {
@@ -49,10 +49,12 @@ class CharacterDocumentService(
     fun retrieveAndProcessFilms(): Result<List<Film>, DatabaseError> {
         return retrieveAllFilms()
             .map {
-                it.map{name ->
-                    filmRepository.save(Film(
-                        name = name
-                    ))
+                it.map { name ->
+                    filmRepository.save(
+                        Film(
+                            name = name
+                        )
+                    )
                 }
             }
     }
@@ -69,10 +71,12 @@ class CharacterDocumentService(
                 it.flatMap { it.videoGames }.distinct()
             }
             .map {
-                it.map{game ->
-                    videoGameRepository.save(Videogame(
-                        name = game
-                    ))
+                it.map { game ->
+                    videoGameRepository.save(
+                        Videogame(
+                            name = game
+                        )
+                    )
                 }
             }
     }
@@ -89,10 +93,12 @@ class CharacterDocumentService(
                 it.flatMap { it.parkAttractions }.distinct()
             }
             .map {
-                it.map{name ->
-                    parkAttractionRepository.save(ParkAttraction(
-                        name = name
-                    ))
+                it.map { name ->
+                    parkAttractionRepository.save(
+                        ParkAttraction(
+                            name = name
+                        )
+                    )
                 }
             }
     }
@@ -109,10 +115,12 @@ class CharacterDocumentService(
                 it.flatMap { it.shortFilms }.distinct()
             }
             .map {
-                it.map{name ->
-                    shortFilmRepository.save(ShortFilm(
-                        name = name
-                    ))
+                it.map { name ->
+                    shortFilmRepository.save(
+                        ShortFilm(
+                            name = name
+                        )
+                    )
                 }
             }
     }
@@ -129,17 +137,74 @@ class CharacterDocumentService(
                 it.flatMap { it.tvShows }.distinct()
             }
             .map {
-                it.map{name ->
+                it.map { name ->
                     tvShowRepository.save(
                         TvShow(
-                        name = name
-                    )
+                            name = name
+                        )
                     )
                 }
             }
     }
 
-    fun retrieveAndProcess
+    fun retrieveAndProcessCharacters(): Result<List<Character>, DatabaseError> {
+        return runCatching {
+            characterMongoRepository.findAll()
+        }
+            .mapError {
+                DatabaseError(it.message)
+            }
+            .map { characters ->
+                characters.map {
+                    processAndSaveCharacter(it)
+                }
+            }
+    }
+
+    private fun processAndSaveCharacter(characterDocument: CharacterResponse): Character {
+        val character = Character(
+            name = characterDocument.name,
+            sourceUrl = characterDocument.sourceUrl,
+            imageUrl = characterDocument.imageUrl
+        )
+
+        characterDocument.films.forEach {
+            val film = filmRepository.findByName(it)
+            film?.let {
+                character.films.add(it)
+            }
+        }
+
+        characterDocument.tvShows.forEach {
+            val tvShow = tvShowRepository.findByName(it)
+            tvShow?.let {
+                character.tvShows.add(it)
+            }
+        }
+
+        characterDocument.shortFilms.forEach {
+            val shortFilm = shortFilmRepository.findByName(it)
+            shortFilm?.let {
+                character.shortFilms.add(it)
+            }
+        }
+
+        characterDocument.parkAttractions.forEach {
+            val film = parkAttractionRepository.findByName(it)
+            film?.let {
+                character.parkAttractions.add(it)
+            }
+        }
+
+        characterDocument.videoGames.forEach {
+            val film = videoGameRepository.findByName(it)
+            film?.let {
+                character.videogames.add(it)
+            }
+        }
+
+        return characterRepository.save(character)
+    }
 
 
 }

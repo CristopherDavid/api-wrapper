@@ -9,7 +9,7 @@ data class ParkAttraction(
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Int? =  null ,
 
-    val name: String,
+    val name: String ="",
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -18,10 +18,4 @@ data class ParkAttraction(
         inverseJoinColumns = [JoinColumn(name = "character_id")]
     )
     val characters: List<Character>? = null
-){
-    constructor(name: String) : this(
-        id= null,
-        name = name,
-        characters = null
-    )
-}
+)

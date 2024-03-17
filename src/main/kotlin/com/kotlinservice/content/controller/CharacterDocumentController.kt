@@ -92,4 +92,15 @@ class CharacterDocumentController (private val characterDocumentService: Charact
             }
     }
 
+    @GetMapping("/process/characters")
+    fun processAllCharacters(): ResponseEntity<String> {
+        return characterDocumentService.retrieveAndProcessCharacters()
+            .map {
+                ResponseEntity.ok("${it.size} characters, inserted into the DB")
+            }
+            .getOrThrow{
+                ErrorResponseException(HttpStatus.INTERNAL_SERVER_ERROR)
+            }
+    }
+
 }

@@ -33,3 +33,7 @@ Accept: application/json
 ### Process ShortFilms
 GET http://localhost:8080/v1/documents/process/shortFilms
 Accept: application/json
+
+### Process Characters
+GET http://localhost:8080/v1/documents/process/characters
+Accept: application/json
